@@ -1,4 +1,4 @@
-export interface httpRequest {
+export interface HttpRequest {
   body?: any
 }
 
