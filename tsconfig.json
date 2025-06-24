@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "allowJS": true,
+    "baseUrl": "./src",
     "esModuleInterop": true,
     "module": "commonjs",
     "outDir": "./dist",
