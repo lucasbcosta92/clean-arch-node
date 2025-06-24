@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.0.3",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
@@ -22,7 +23,9 @@
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-promise": "5.1.0",
     "husky": "^9.1.7",
+    "jest": "^30.0.2",
     "lint-staged": "^16.1.2",
+    "ts-jest": "^29.4.0",
     "typescript": "^5.8.3"
   }
 }
