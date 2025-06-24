@@ -5,5 +5,10 @@
     "module": "commonjs",
     "outDir": "./dist",
     "target": "ES2019",
+    "paths": {
+      "@presentation/*": [
+        "presentation/*"
+      ],
+    }
   }
 }
