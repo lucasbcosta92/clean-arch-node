@@ -1,0 +1,20 @@
+import bcrypt from 'bcrypt'
+
+import { BcryptAdapter } from './bcrypt-adapter'
+
+describe('Bcrypt Adapter', () => {
+  it('should call bcrypt With correct values', async () => {
+    const salt = 12
+    const hashValue = 'any_value'
+
+    const sut = new BcryptAdapter(salt)
+
+    const hashSpy = jest.spyOn(bcrypt, 'hash')
+
+    await sut.encrypt(hashValue)
+
+    expect(hashSpy).toHaveBeenCalledWith(hashValue, salt)
+  })
+
+  // it('', () => {})
+})
