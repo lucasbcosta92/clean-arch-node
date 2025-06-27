@@ -1,10 +1,28 @@
 import { DbAddAccount } from "./db-add-account"
 
-import { Encrypter } from "./db-add-account-protocols"
+import { AccountModel, AddAccountModel, AddAccountRepository, Encrypter } from "./db-add-account-protocols"
 
 interface SutTypes {
+  addAccountRepositoryStub: AddAccountRepository
   encrypterStub: Encrypter
   sut: DbAddAccount
+}
+
+const makeAddAccountRepository = (): AddAccountRepository => {
+  class AddAccountRepositoryStub implements AddAccountRepository {
+    async add(account: AddAccountModel): Promise<AccountModel> {
+      const newAccount = {
+        id: 'account_id',
+        name: 'account_name',
+        email: 'account_email@email.com',
+        password: 'encrypted_value'
+      }
+
+      return new Promise(resolve => resolve(newAccount))
+    }
+  }
+
+  return new AddAccountRepositoryStub()
 }
 
 const makeEncrypter = (): Encrypter => {
@@ -18,10 +36,11 @@ const makeEncrypter = (): Encrypter => {
 }
 
 const makeSut = (): SutTypes => {
+  const addAccountRepositoryStub = makeAddAccountRepository()
   const encrypterStub = makeEncrypter()
-  const sut = new DbAddAccount(encrypterStub)
+  const sut = new DbAddAccount(addAccountRepositoryStub, encrypterStub)
 
-  return { encrypterStub, sut }
+  return { addAccountRepositoryStub, encrypterStub, sut }
 }
 
 describe(('DbAddAccount Usecase'), () => {
@@ -57,5 +76,25 @@ describe(('DbAddAccount Usecase'), () => {
     const promise = sut.add(account)
 
     await expect(promise).rejects.toThrow()
+  })
+
+  it('should call AddAccountRepository with correct values', async () => {
+    const { addAccountRepositoryStub, sut } = makeSut()
+
+    const addAccountSpy = jest.spyOn(addAccountRepositoryStub, 'add')
+
+    const account = {
+      name: 'account_name',
+      email: 'account_email@email.com',
+      password: 'account_password'
+    }
+
+    await sut.add(account)
+
+    expect(addAccountSpy).toHaveBeenCalledWith({
+      name: 'account_name',
+      email: 'account_email@email.com',
+      password: 'encrypted_value'
+    })
   })
 })
