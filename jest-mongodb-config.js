@@ -1,7 +1,7 @@
 module.exports = {
   mongodbMemoryServerOptions: {
     binary: {
-      version: '4.0.3',
+      version: '7.0.0',
       skipMD5: true,
     },
     instance: {
@@ -9,4 +9,5 @@ module.exports = {
     },
     autoStart: false,
   },
+  preset: '@shelf/jest-mongodb',
 };
