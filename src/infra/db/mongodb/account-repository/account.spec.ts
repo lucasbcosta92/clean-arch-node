@@ -36,6 +36,4 @@ describe('Account Mongo Repository', () => {
     expect(account.email).toBe(accountData.email)
     expect(account.password).toBe(accountData.password)
   })
-
-  // it('', async () => {})
 })
