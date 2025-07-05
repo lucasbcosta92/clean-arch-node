@@ -3,7 +3,7 @@ import { BcryptAdapter } from "../../infra/cryptography/bcrypt-adapter";
 import { Controller } from "../../presentation/protocols";
 import { DbAddAccount } from "../../data/use-cases/add-account/db-add-account";
 import { EmailValidatorAdapter } from "../../utils/email-validator-adapter";
-import { LogControllerDecorator } from "main/decorators/log";
+import { LogControllerDecorator } from "../decorators/log";
 import { SignUpController } from "../../presentation/controllers/signup/signup";
 
 const SALT = 12
