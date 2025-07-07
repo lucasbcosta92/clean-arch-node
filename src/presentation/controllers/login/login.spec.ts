@@ -1,10 +1,11 @@
 import { LoginController } from "./login"
 
 import { badRequest, serverError } from "../../../presentation/helpers/http-helper"
-import { EmailValidator, HttpRequest } from "./login-protocols"
+import { Authentication, EmailValidator, HttpRequest } from "./login-protocols"
 import { InvalidParamError, MissingParamError, ServerError } from "../../../presentation/errors"
 
 interface SutTypes {
+  authenticationStub: Authentication
   emailValidatorStub: EmailValidator
   sut: LoginController
 }
@@ -15,6 +16,16 @@ const makeFakeRequest = (): HttpRequest => ({
     password: 'account_password'
   }
 })
+
+const makeAuthentication = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async auth(email: string, password: string): Promise<string> {
+      return new Promise(resolve => resolve('authentication_token'))
+    }
+  }
+
+  return new AuthenticationStub()
+}
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -27,10 +38,15 @@ const makeEmailValidator = (): EmailValidator => {
 }
 
 const makeSut = (): SutTypes => {
+  const authenticationStub = makeAuthentication()
   const emailValidatorStub = makeEmailValidator()
-  const sut = new LoginController(emailValidatorStub)
+  const sut = new LoginController(authenticationStub, emailValidatorStub)
 
-  return { emailValidatorStub, sut }
+  return {
+    authenticationStub,
+    emailValidatorStub,
+    sut
+  }
 }
 
 describe('Login Controller', () => {
@@ -93,5 +109,17 @@ describe('Login Controller', () => {
     const response = await sut.handle(makeFakeRequest())
 
     expect(response).toEqual(serverError(new ServerError(null)))
+  })
+
+  it('should call Authentication with correct values', async () => {
+    const { authenticationStub, sut } = makeSut()
+
+    const addSpy = jest.spyOn(authenticationStub, 'auth')
+
+    const httpRequest = makeFakeRequest()
+
+    await sut.handle(makeFakeRequest())
+
+    expect(addSpy).toHaveBeenCalledWith(httpRequest.body.email, httpRequest.body.password)
   })
 })
