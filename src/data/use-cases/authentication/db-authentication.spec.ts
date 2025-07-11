@@ -4,11 +4,13 @@ import { AuthenticationModel } from "../../../domain/use-cases/authentication"
 import { DbAuthentication } from "./db-authentication"
 import { HashComparer } from "../../protocols/criptography/hash-comparer"
 import { LoadAccountByEmailRepository } from "../../protocols/db/load-account-by-email-repository"
+import { TokenGenerator } from "../../protocols/criptography/token-generator"
 
 interface SutTypes {
   hashComparerStub: HashComparer
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
   sut: DbAuthentication
+  tokenGeneratorStub: TokenGenerator
 }
 
 const makeFakeAccount = (): AccountModel => ({
@@ -43,15 +45,31 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   return new LoadAccountByEmailRepositoryStub()
 }
 
+const makeTokenGenerator = (): TokenGenerator => {
+  class TokenGeneratorStub implements TokenGenerator {
+    async generate(id: string): Promise<string> {
+      return new Promise(resolve => resolve('any_token'))
+    }
+  }
+
+  return new TokenGeneratorStub()
+}
+
 const makeSut = (): SutTypes => {
   const hashComparerStub = makeHashComparer()
   const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository()
-  const sut = new DbAuthentication(loadAccountByEmailRepositoryStub, hashComparerStub)
+  const tokenGeneratorStub = makeTokenGenerator()
+  const sut = new DbAuthentication(
+    loadAccountByEmailRepositoryStub,
+    hashComparerStub,
+    tokenGeneratorStub
+  )
 
   return {
     hashComparerStub,
     loadAccountByEmailRepositoryStub,
-    sut
+    sut,
+    tokenGeneratorStub
   }
 }
 
@@ -121,4 +139,15 @@ describe(('DbAuthentication Usecase'), () => {
 
     expect(response).toBe(null)
   })
+
+  it('should call TokenGenerator with correct id', async () => {
+    const { tokenGeneratorStub, sut } = makeSut()
+
+    const generateSpy = jest.spyOn(tokenGeneratorStub, 'generate')
+
+    await sut.auth(makeFakeAuthentication())
+
+    expect(generateSpy).toHaveBeenCalledWith('account_id')
+  })
+
 })
