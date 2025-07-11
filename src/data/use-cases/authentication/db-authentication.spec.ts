@@ -2,7 +2,7 @@ import { AccountModel } from "../../../domain/models/account"
 import { AuthenticationModel } from "../../../domain/use-cases/authentication"
 
 import { DbAuthentication } from "./db-authentication"
-import { LoadAccountByEmailRepository } from "../../protocols"
+import { LoadAccountByEmailRepository } from "../../protocols/db/load-account-by-email-repository"
 
 interface SutTypes {
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
