@@ -1,6 +1,7 @@
+import { ObjectId } from "mongodb";
+
 import { AccountModel } from "../../../../domain/models/account";
 import { AddAccountModel } from "../../../../domain/use-cases/add-account";
-import { ObjectId } from "mongodb";
 
 import { MongoHelper } from "../helpers/mongo-helper";
 import { AddAccountRepository } from "../../../../data/protocols/db/add-account-repository";
