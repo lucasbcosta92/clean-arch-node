@@ -1,9 +1,9 @@
 import { AccountModel } from "../../domain/models/account"
 import { Controller, HttpRequest, HttpResponse } from "../../presentation/protocols"
-import { LogErrorRepository } from "../../data/protocols/db/log-error-repository"
+import { LogErrorRepository } from "../../data/protocols/db/log/log-error-repository"
 import { ok, serverError } from "../../presentation/helpers/http-helper"
 
-import { LogControllerDecorator } from "./log"
+import { LogControllerDecorator } from "./log-controller-decorator"
 
 interface SutTypes {
   controllerStub: Controller

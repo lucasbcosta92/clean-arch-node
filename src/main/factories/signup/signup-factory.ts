@@ -1,12 +1,12 @@
-import { AccountMongoRepository } from "../../../infra/db/mongodb/account-repository/account";
+import { AccountMongoRepository } from "../../../infra/db/mongodb/account/account-mongo-repository";
 import { BcryptAdapter } from "../../../infra/cryptography/bcrypt-adapter/bcrypt-adapter";
 import { Controller } from "../../../presentation/protocols";
 import { DbAddAccount } from "../../../data/use-cases/add-account/db-add-account";
-import { LogControllerDecorator } from "../../decorators/log";
-import { LogMongoRepository } from "../../../infra/db/mongodb/log-repository/log";
-import { SignUpController } from "../../../presentation/controllers/signup/signup";
+import { LogControllerDecorator } from "../../decorators/log-controller-decorator";
+import { LogMongoRepository } from "../../../infra/db/mongodb/log/log-mongo-repository";
+import { SignUpController } from "../../../presentation/controllers/signup/signup-controller";
 
-import { makeSignUpValidation } from "./signup-validation";
+import { makeSignUpValidation } from "./signup-validation-factory";
 
 const SALT = 12
 
