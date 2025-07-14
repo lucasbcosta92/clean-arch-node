@@ -1,7 +1,6 @@
 
 import { EmailValidator } from '../../../presentation/protocols/email-validator'
 import {
-  CompareFieldsValidation,
   EmailValidation,
   RequiredFieldValidation,
   ValidationComposite,
@@ -32,7 +31,6 @@ describe('LoginValidation Factory', () => {
       validations.push(new RequiredFieldValidation(field))
     }
 
-    validations.push(new CompareFieldsValidation('password', 'passwordConfirmation'))
     validations.push(new EmailValidation('email', makeEmailValidator()))
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
