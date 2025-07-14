@@ -1,6 +1,6 @@
 import { Collection } from 'mongodb';
-import request from 'supertest'
 import { hash } from 'bcrypt'
+import request from 'supertest'
 
 import app from '../config/app'
 
