@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "dev": "sucrase-node src/main/server.ts",
+    "dev": "npm run build && docker-compose up",
     "start": "node dist/main/server.js",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:ci": "npm test -- --coverage",
@@ -40,7 +40,6 @@
     "husky": "^9.1.7",
     "jest": "^30.0.2",
     "lint-staged": "^16.1.2",
-    "sucrase": "^3.35.0",
     "supertest": "^7.1.1",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3"
