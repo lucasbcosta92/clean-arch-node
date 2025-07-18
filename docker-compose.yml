@@ -1,4 +1,3 @@
-version: "3"
 services:
   mongo:
     container_name: mongo-container
@@ -13,10 +12,12 @@ services:
     build: .
     image: clean-arch
     restart: always
-    command: npm start
+    command: npm run debug
     volumes:
       - ./dist/:/usr/repos/clean-arch/dist/
+      - ./package.json:/usr/repos/clean-arch/package.json
     ports:
       - "8080:8080"
+      - "8081:8081"
     links:
-     - mongo
+      - mongo

@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf dist && tsc",
+    "debug": "node --inspect=0.0.0.0=8081 --nolazy dist/main/server.js",
     "dev": "npm run build && docker-compose up",
     "start": "node dist/main/server.js",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
