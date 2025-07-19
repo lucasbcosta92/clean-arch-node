@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "debug": "node --inspect=0.0.0.0=8081 --nolazy dist/main/server.js",
+    "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0=8081 --nolazy ./dist/main/server.js",
     "dev": "npm run build && docker-compose up",
     "start": "node dist/main/server.js",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
@@ -12,7 +12,8 @@
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "npm test -- --findRelatedTests",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
-    "test:verbose": "jest --passWithNoTests --runInBand"
+    "test:verbose": "jest --passWithNoTests --runInBand",
+    "watch": "tsc -w"
   },
   "keywords": [],
   "author": "",
@@ -50,6 +51,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.17.0",
+    "nodemon": "^3.1.10",
     "validator": "^13.15.15"
   },
   "engines": {

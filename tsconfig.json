@@ -4,6 +4,7 @@
     "esModuleInterop": true,
     "module": "commonjs",
     "outDir": "./dist",
+    "rootDir": "src",
     "target": "ES2019",
   },
   "include": [
