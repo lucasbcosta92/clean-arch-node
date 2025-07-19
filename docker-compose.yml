@@ -9,10 +9,10 @@ services:
       - "27018:27017"
   api:
     container_name: api-container
-    build: .
-    image: clean-arch
+    image: node:22
+    working_dir: /usr/repos/clean-arch
     restart: always
-    command: npm run debug
+    command: bash -c "npm install --omit=dev && npm run debug"
     volumes:
       - ./dist/:/usr/repos/clean-arch/dist/
       - ./package.json:/usr/repos/clean-arch/package.json
