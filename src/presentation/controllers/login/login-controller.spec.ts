@@ -59,7 +59,7 @@ describe('Login Controller', () => {
 
     const response = await sut.handle(makeFakeRequest())
 
-    expect(response).toEqual(serverError(new ServerError(null)))
+    expect(response).toEqual(serverError(new ServerError('')))
   })
 
   it('should call Authentication with correct values', async () => {
