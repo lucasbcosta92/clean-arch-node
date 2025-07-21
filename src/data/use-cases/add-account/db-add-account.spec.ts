@@ -1,10 +1,17 @@
 import { DbAddAccount } from "./db-add-account"
 
-import { AccountModel, AddAccountModel, AddAccountRepository, Hasher } from "./db-add-account-protocols"
+import {
+  AccountModel,
+  AddAccountModel,
+  AddAccountRepository,
+  Hasher,
+  LoadAccountByEmailRepository
+} from "./db-add-account-protocols"
 
 interface SutTypes {
   addAccountRepositoryStub: AddAccountRepository
   hasherStub: Hasher
+  loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
   sut: DbAddAccount
 }
 
@@ -41,12 +48,28 @@ const makeHasher = (): Hasher => {
   return new HasherStub()
 }
 
+const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
+  class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
+    async loadByEmail(email: string): Promise<AccountModel> {
+      return new Promise(resolve => resolve(makeFakeAccount()))
+    }
+  }
+
+  return new LoadAccountByEmailRepositoryStub()
+}
+
 const makeSut = (): SutTypes => {
   const addAccountRepositoryStub = makeAddAccountRepository()
   const hasherStub = makeHasher()
-  const sut = new DbAddAccount(addAccountRepositoryStub, hasherStub)
+  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository()
+  const sut = new DbAddAccount(addAccountRepositoryStub, hasherStub, loadAccountByEmailRepositoryStub)
 
-  return { addAccountRepositoryStub, hasherStub, sut }
+  return {
+    addAccountRepositoryStub,
+    hasherStub,
+    loadAccountByEmailRepositoryStub,
+    sut
+  }
 }
 
 describe(('DbAddAccount Usecase'), () => {
@@ -104,5 +127,17 @@ describe(('DbAddAccount Usecase'), () => {
     const response = await sut.add(makeFakeAccountData())
 
     expect(response).toEqual(makeFakeAccount())
+  })
+
+  it('should call LoadAccountByEmailRepository with correct email', async () => {
+    const { loadAccountByEmailRepositoryStub, sut } = makeSut()
+
+    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+
+    const authenticationParams = makeFakeAccountData()
+
+    await sut.add(authenticationParams)
+
+    expect(loadSpy).toHaveBeenCalledWith(authenticationParams.email)
   })
 })
