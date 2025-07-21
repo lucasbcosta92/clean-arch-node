@@ -3,9 +3,7 @@ import { Collection } from 'mongodb';
 import { LogMongoRepository } from './log-mongo-repository'
 import { MongoHelper } from '../helpers/mongo-helper';
 
-const makeSut = (): LogMongoRepository => {
-  return new LogMongoRepository()
-}
+const makeSut = (): LogMongoRepository => new LogMongoRepository()
 
 describe('Log Mongo Repository', () => {
   let errorsCollection: Collection

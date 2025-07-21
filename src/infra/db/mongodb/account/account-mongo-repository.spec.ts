@@ -84,6 +84,6 @@ describe('Account Mongo Repository', () => {
     const account = await accountsCollection.findOne(response.insertedId)
 
     expect(account).toBeTruthy()
-    expect(account.accessToken).toBeTruthy()
+    expect(account?.accessToken).toBeTruthy()
   })
 })
